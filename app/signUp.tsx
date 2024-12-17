@@ -19,7 +19,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { FontAwesome } from '@expo/vector-icons';
 import DatePicker from 'react-native-date-picker';
 import { styles } from './styles/signUpStyles';
-
+import { formatDate } from '../components/formatDate';
 
 export default function RegisterScreen({ navigation }: { navigation: any }) {
   const [username, setUsername] = useState('');
@@ -50,7 +50,7 @@ export default function RegisterScreen({ navigation }: { navigation: any }) {
     setShowDatePicker(false);
   };
 
-  /* Adiciona um novo utilizador a base de dados
+ 
   const handleRegister = async () => {
     console.log('entrei');
 
@@ -70,17 +70,17 @@ export default function RegisterScreen({ navigation }: { navigation: any }) {
         password
       );
       const user = userCredential.user;
-
+      const formatBirthDate = formatDate(birthDate);
       // Referência ao documento do usuário
       const userRef = firestore().collection('users').doc(user.uid);
 
       // Adiciona dados adicionais em uma subcoleção
       await userRef.collection('data').add({
         username,
+        formatBirthDate,
         height,
         weight,
         gender,
-        activityLevel,
       });
 
       // Adicção das Refeições defaults para o utilizador
@@ -93,7 +93,7 @@ export default function RegisterScreen({ navigation }: { navigation: any }) {
       // Você pode adicionar uma mensagem de erro para o usuário aqui
     }
   };
-  */
+  
   const _renderItem = (item: {
     label:
       | string

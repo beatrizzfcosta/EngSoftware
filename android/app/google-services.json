@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "571223801510",
+    "project_id": "engsoftware-6cb7b",
+    "storage_bucket": "engsoftware-6cb7b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:571223801510:android:b9813165349f41dc63fe67",
+        "android_client_info": {
+          "package_name": "com.lukakrazy.app_es"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "571223801510-u7u1vpofftmg90esu1eegdsb281evjjs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lukakrazy.app_es",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "571223801510-f7t3l62g5sv1vg8gudfub45qpj4f9sus.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEnSYXvxvrBSyFPsMRepTEtBbn54N7qmc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "571223801510-f7t3l62g5sv1vg8gudfub45qpj4f9sus.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
