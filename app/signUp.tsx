@@ -8,6 +8,8 @@ import {
   Dimensions,
   Modal,
   Alert,
+  Platform,
+  Image
 } from 'react-native';
 import { Input } from 'react-native-elements';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -16,41 +18,70 @@ import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { FontAwesome } from '@expo/vector-icons';
+import { AntDesign, FontAwesome, FontAwesome6 } from '@expo/vector-icons';
 import DatePicker from 'react-native-date-picker';
 import { styles } from './styles/signUpStyles';
 import { formatDate } from '../components/formatDate';
+import * as ImagePicker from 'expo-image-picker';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+
 
 export default function RegisterScreen({ navigation }: { navigation: any }) {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
-  const [birthDate, setBirthDate] = useState<Date>(new Date());
-  const [height, setHeight] = useState('');
-  const [weight, setWeight] = useState('');
+
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [showDatePicker, setShowDatePicker] = useState(false);
+
   const [gender, setGender] = useState<string>('');
   const genders = [
     { label: 'Masculino', value: 'masculino' },
     { label: 'Feminino', value: 'feminino' },
     { label: 'Outro', value: 'outro' },
   ];
-  const [activityLevel, setActivityLevel] = useState<string>('');
-  const activityLevels = [
-    { label: 'Sedentário', value: 'sedentary' },
-    { label: 'Levemente Ativo: 1-2/semana', value: 'lightly_active' },
-    { label: 'Moderadamente Ativo: 3-4/semana', value: 'moderately_active' },
-    { label: 'Muito Ativo: 5-6/semana', value: 'very_active' },
-    { label: 'Extremamente Ativo: 6-7/semana', value: 'extremely_active' },
+  const [permissao, setPermissao] = useState<string>('');
+  const permissoes = [
+    { label: 'Administrador', value: 'admin' },
+    { label: 'Professor', value: 'professor' },
+    { label: 'Aluno', value: 'aluno' },
   ];
+  const [photoUrl, setPhotoUrl] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleConfirm = (selectedDate: Date) => {
-    setBirthDate(selectedDate);
-    setShowDatePicker(false);
+
+  const handleAddProfilePhoto = async () => {
+    try {
+      if (Platform.OS === 'android') {
+        let { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+          alert('Desculpe, precisamos da permissão para acessar suas fotos!');
+          return;
+        }
+
+        const { status: cameraStatus } = await ImagePicker.requestCameraPermissionsAsync();
+        if (cameraStatus !== 'granted') {
+          alert('Desculpe, precisamos da permissão para acessar a câmera!');
+          return;
+        }
+      }
+
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ['images'],
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1,
+      });
+
+      if (!result.canceled) {
+        console.log('Imagem selecionada:', result.assets[0].uri);
+        setPhotoUrl(result.assets[0].uri);
+      }
+    } catch (error) {
+      console.error('Erro ao selecionar a foto de perfil:', error);
+    }
   };
 
- 
+
   const handleRegister = async () => {
     console.log('entrei');
 
@@ -70,17 +101,16 @@ export default function RegisterScreen({ navigation }: { navigation: any }) {
         password
       );
       const user = userCredential.user;
-      const formatBirthDate = formatDate(birthDate);
+
       // Referência ao documento do usuário
       const userRef = firestore().collection('users').doc(user.uid);
 
       // Adiciona dados adicionais em uma subcoleção
       await userRef.collection('data').add({
         username,
-        formatBirthDate,
-        height,
-        weight,
+        permissao,
         gender,
+        profilePhotoUrl: photoUrl
       });
 
       // Adicção das Refeições defaults para o utilizador
@@ -93,17 +123,17 @@ export default function RegisterScreen({ navigation }: { navigation: any }) {
       // Você pode adicionar uma mensagem de erro para o usuário aqui
     }
   };
-  
+
   const _renderItem = (item: {
     label:
-      | string
-      | number
-      | boolean
-      | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-      | Iterable<React.ReactNode>
-      | React.ReactPortal
-      | null
-      | undefined;
+    | string
+    | number
+    | boolean
+    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+    | Iterable<React.ReactNode>
+    | React.ReactPortal
+    | null
+    | undefined;
   }) => {
     return (
       <View style={styles.item}>
@@ -112,6 +142,7 @@ export default function RegisterScreen({ navigation }: { navigation: any }) {
     );
   };
 
+
   // Verifica de todos os dados foram preenchidos
 
   const isFormValid = () => {
@@ -119,9 +150,7 @@ export default function RegisterScreen({ navigation }: { navigation: any }) {
       username &&
       email &&
       gender &&
-      birthDate &&
-      height &&
-      weight &&
+      permissao &&
       password == confirmPassword
     );
   };
@@ -129,8 +158,8 @@ export default function RegisterScreen({ navigation }: { navigation: any }) {
   const handleRegisto = () => {
     if (isFormValid()) {
       Alert.alert(
-        'Seus dados estão correctos?',
-        'Bem vindo a Calorize!',
+        'Os dados estão correctos?',
+        'Registar novo utilizador!',
         [
           {
             text: 'Cancelar',
@@ -139,7 +168,7 @@ export default function RegisterScreen({ navigation }: { navigation: any }) {
           {
             text: 'Registar',
             onPress: () => {
-              
+              handleRegister()
             },
           },
         ],
@@ -153,25 +182,6 @@ export default function RegisterScreen({ navigation }: { navigation: any }) {
     }
   };
 
-  const handleIndex = () => {
-    Alert.alert(
-      'Index',
-      'Deseja voltar ao index?',
-      [
-        {
-          text: 'Cancelar',
-          style: 'cancel',
-        },
-        {
-          text: 'Voltar',
-          onPress: () => {
-            navigation.navigate('index');
-          },
-        },
-      ],
-      { cancelable: true }
-    );
-  };
 
   const renderContent = () => (
     <View style={styles.contentContainer}>
@@ -179,17 +189,27 @@ export default function RegisterScreen({ navigation }: { navigation: any }) {
         <FontAwesome
           name="arrow-left"
           size={24}
-          color="black"
+          color={theme.colorDarkBlue}
           onPress={() => navigation.navigate('Sign In')}
         />
       </TouchableOpacity>
 
-      <Text style={styles.title}>Registo</Text>
+      <Text style={styles.title}>Adicionar Utilizador</Text>
+      <View style={styles.profileImageContainer}>
+        <View style={styles.profileImage}>
+          {photoUrl ? (<Image source={{ uri: photoUrl }} style={{ width: 150, height: 150, borderRadius: 75 }} />) : (<FontAwesome name="user-circle" size={150} color={theme.colorDarkBlue} />)}
+        </View>
+        <TouchableOpacity onPress={handleAddProfilePhoto}>
+          <View style={styles.photoAdd}>
+            <FontAwesome name="camera" size={24} color={theme.colorDarkBlue} />
+          </View>
+        </TouchableOpacity>
+      </View>
       <Text style={styles.label}>Nome</Text>
       <Input
         containerStyle={styles.inputContainer}
         inputStyle={styles.input}
-        placeholder="Insira o username"
+        placeholder="Insira o Nome do Utilizador"
         placeholderTextColor="#a3a19e"
         value={username}
         onChangeText={setUsername}
@@ -245,87 +265,29 @@ export default function RegisterScreen({ navigation }: { navigation: any }) {
         />
       </View>
 
-      <Text style={styles.label}>Data de Nascimento</Text>
-      <TouchableOpacity
-        style={styles.dateInputContainer}
-        onPress={() => setShowDatePicker(true)}
-      >
-        <FontAwesome
-          name="calendar"
-          size={24}
-          color={theme.colorDarkBlue}
-          style={{ marginRight: 5 }}
+      <Text style={styles.label}>
+        Tipo de Utilizador
+      </Text>
+      <View style={styles.dropdownWrapper}>
+        <Dropdown
+          data={permissoes}
+          value={permissao}
+          placeholder="Selecione o tipo do novo utilizador"
+          placeholderStyle={styles.placeholder}
+          style={[styles.dropdown, styles.inputContainer]}
+          onChange={(item) => {
+            setPermissao(item.value);
+            console.log('selected', item);
+          }}
+          renderLeftIcon={() => (
+            <FontAwesome6 name="users-gear" size={24} color={theme.colorDarkBlue} style={{ marginRight: 5 }} />
+          )}
+          renderItem={_renderItem}
+          labelField={'label'}
+          valueField={'value'}
         />
-        <Text style={styles.dateText}>
-          {birthDate.toLocaleDateString('pt-PT')}
-        </Text>
-      </TouchableOpacity>
-
-      <Modal
-        visible={showDatePicker}
-        transparent={true}
-        animationType="slide"
-        onRequestClose={() => setShowDatePicker(false)}
-      >
-        <View style={styles.modalBackground}>
-          <View style={styles.pickerContainer}>
-            <DatePicker
-              date={birthDate}
-              onDateChange={setBirthDate}
-              maximumDate={new Date()} // Define o máximo como hoje para impedir datas futuras
-              mode="date"
-            />
-            <TouchableOpacity
-              style={styles.confirmButton}
-              onPress={() => handleConfirm(birthDate)}
-            >
-              <Text style={styles.confirmButtonText}>Confirmar</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-
-      <View style={styles.rowContainer}>
-        <View style={styles.columnContainer}>
-          <Text style={styles.label}>Altura</Text>
-          <Input
-            inputStyle={styles.input}
-            placeholder="cm"
-            placeholderTextColor="#a3a19e"
-            value={height}
-            onChangeText={setHeight}
-            keyboardType="numeric"
-            leftIcon={
-              <FontAwesome
-                name="arrows-v"
-                size={24}
-                color={theme.colorDarkBlue}
-                style={{ marginRight: 5 }}
-              />
-            }
-          />
-        </View>
-
-        <View style={styles.columnContainer}>
-          <Text style={styles.label}>Peso</Text>
-          <Input
-            inputStyle={styles.input}
-            placeholder="kg"
-            placeholderTextColor="#a3a19e"
-            value={weight}
-            onChangeText={setWeight}
-            keyboardType="numeric"
-            leftIcon={
-              <FontAwesome
-                name="balance-scale"
-                size={24}
-                color={theme.colorDarkBlue}
-                style={{ marginRight: 5 }}
-              />
-            }
-          />
-        </View>
       </View>
+
 
       <Text style={styles.label}>Password</Text>
       <Input
@@ -365,9 +327,20 @@ export default function RegisterScreen({ navigation }: { navigation: any }) {
         }
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleRegisto}>
-        <Text style={styles.buttonText}>Registar</Text>
-      </TouchableOpacity>
+      <View style={styles.buttonContainer}>
+        {/* Sombra deslocada */}
+        <View style={styles.shadowLayer} />
+        {/* Botão principal */}
+        <View style={styles.button}>
+          <TouchableOpacity onPress={handleRegisto}
+            style={styles.touchable}>
+            <View style={styles.buttonContent}>
+              <Text style={styles.buttonText}>Registar</Text>
+              <AntDesign name="arrowright" size={20} color="#000" />
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 
@@ -377,6 +350,7 @@ export default function RegisterScreen({ navigation }: { navigation: any }) {
       renderItem={renderContent}
       keyExtractor={(item) => item.key}
       contentContainerStyle={styles.scrollContainer}
+      keyboardShouldPersistTaps="handled"
     />
   );
 }

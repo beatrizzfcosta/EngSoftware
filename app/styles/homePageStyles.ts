@@ -4,6 +4,7 @@ import { theme } from '../../assets/theme';
 export 
 const styles = StyleSheet.create({
   container: {
+    marginTop:50,
     flex: 1,
     backgroundColor: "#fff",
     padding: 20,

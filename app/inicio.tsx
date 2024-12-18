@@ -28,17 +28,19 @@ export default function Index({ navigation }: { navigation: any }) {
           Bem Vind@ à {'\n'}
           Aplicação da tua Escola
         </Text>
-        <View style={styles.button}>
-          <TouchableOpacity onPress={handleLogin}>
-            <View style={styles.buttonContent}>
-              <Text
-                style={styles.buttonText}
-              >Vamos Começar</Text>
-
-              <AntDesign name="arrowright" size={20} color={theme.colorBlack}></AntDesign>
-            </View>
-          </TouchableOpacity>
-        </View>
+        <View style={styles.buttonContainer}>
+      {/* Sombra deslocada */}
+      <View style={styles.shadowLayer} />
+      {/* Botão principal */}
+      <View style={styles.button}>
+        <TouchableOpacity onPress={handleLogin} style={styles.touchable}>
+          <View style={styles.buttonContent}>
+            <Text style={styles.buttonText}>Vamos Começar</Text>
+            <AntDesign name="arrowright" size={20} color="#000" />
+          </View>
+        </TouchableOpacity>
+      </View>
+    </View>
       </View>
     </View>
   );

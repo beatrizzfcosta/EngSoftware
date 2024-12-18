@@ -23,7 +23,7 @@ export default function LoginPage({ navigation }: { navigation: any }) {
   const [errorMessage, setErrorMessage] = useState('');
 
   // Função que faz o login com email e password do utilizador e se assim for navegar para a homePage
-/* 
+
   const handleHomePage = async () => {
     try {
       await auth().signInWithEmailAndPassword(mail, password);
@@ -32,27 +32,7 @@ export default function LoginPage({ navigation }: { navigation: any }) {
       console.error('Erro ao autenticar:', error);
       setErrorMessage('Senha ou email incorretos, tente novamente.');
     }
-  }; */
-  // Navegação para a página Index
-  const handleIndex = () => {
-    Alert.alert(
-      'Index',
-      'Deseja voltar ao index?',
-      [
-        {
-          text: 'Cancelar',
-          style: 'cancel',
-        },
-        {
-          text: 'Voltar',
-          onPress: () => {
-            navigation.navigate('index');
-          },
-        },
-      ],
-      { cancelable: true }
-    );
-  };
+  }; 
 
   // Navegação para página de registo
   const handleRegisto = () => {
@@ -67,11 +47,11 @@ export default function LoginPage({ navigation }: { navigation: any }) {
       </View>
       <View style={styles.formContainer}>
       <View>
-      <Text style={styles.label}>Número de Alun@/Professor@</Text>
+      <Text style={styles.label}>Email de Alun@/Professor@</Text>
       <Input
         containerStyle={styles.inputContainer}
         inputStyle={styles.input}
-        placeholder="Insira seu Número de Alun@/Professor@"
+        placeholder="Insira seu Email de Alun@/Professor@"
         placeholderTextColor="#a3a19e"
         value={mail}
         onChangeText={setMail}
@@ -98,17 +78,21 @@ export default function LoginPage({ navigation }: { navigation: any }) {
         <Text style={styles.errorMessage}>{errorMessage}</Text>
       ) : null}
       
-      <View style={styles.button}>
-        <TouchableOpacity>
-          <View style={styles.buttonContent}>
-            <Text
-              style={styles.buttonText}
-            >Vamos Começar</Text>
-
-            <AntDesign name="arrowright" size={20} color={theme.colorBlack}></AntDesign>
+         <View style={styles.buttonContainer}>
+            {/* Sombra deslocada */}
+            <View style={styles.shadowLayer} />
+            {/* Botão principal */}
+            <View style={styles.button}>
+              <TouchableOpacity onPress={handleHomePage}
+               style={styles.touchable}>
+                <View style={styles.buttonContent}>
+                  <Text style={styles.buttonText}>Vamos Começar</Text>
+                  <AntDesign name="arrowright" size={20} color="#000" />
+                </View>
+              </TouchableOpacity>
+            </View>
           </View>
-        </TouchableOpacity>
-      </View>
+
       <TouchableOpacity>
         <Text style={styles.registerText} onPress={handleRegisto}>
           Don't have an account yet? Sign up here!

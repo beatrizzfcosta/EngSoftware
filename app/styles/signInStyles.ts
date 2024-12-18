@@ -39,29 +39,48 @@ export const styles = StyleSheet.create({
       paddingLeft: 0,
       paddingRight: 0,
     },
+    buttonContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    shadowLayer: {
+      position: 'absolute',
+      width: 220, // Ajuste conforme necessário
+      height: 55,
+      backgroundColor: '#2E5D6E', // Cor da sombra sólida
+      top: 8, // Deslocamento vertical
+      left: 8, // Deslocamento horizontal
+
+    },
     button: {
-      padding: 20,
+      width: 220,
+      height: 55,
+      borderWidth: 2,
+      borderColor: '#000',
+      backgroundColor: '#fff', // Fundo branco do botão
+      justifyContent: 'center',
+      alignItems: 'center',
+      elevation: 0, // Sem sombra adicional no botão
+    },
+    touchable: {
+      flex: 1,
+      justifyContent: 'center',
       alignItems: 'center',
     },
     buttonContent: {
-      borderWidth: 3,
-      padding: 8,
-      display: 'flex',
       flexDirection: 'row',
-      shadowColor: theme.colorDarkBlue,
-      shadowOffset: { width:-6, height: 6 }, // Deslocamento horizontal e vertical
-      shadowOpacity: 1, // Opacidade da sombra (1 para sólida)
-      shadowRadius: 0, // Raio da sombra (0 para bordas nítidas)
-      elevation: 4, // Sombra para Android
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      
       gap:5
     },
-    buttonText:{
-      fontWeight:'bold',
-      fontFamily: "Abril Fatface",
-      fontSize:20
+    buttonText: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      color: '#000',
     },
-
     registerText: {
+      marginTop:30,
       color: '#000',
       textDecorationLine: 'underline',
       fontFamily: "Abril Fatface",

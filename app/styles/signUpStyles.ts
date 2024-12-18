@@ -3,6 +3,7 @@ import { theme } from '../../assets/theme';
  
 export const styles = StyleSheet.create({
     scrollContainer: {
+      paddingTop:50,
       alignItems: 'center',
       backgroundColor: '#fff',
     },
@@ -14,7 +15,7 @@ export const styles = StyleSheet.create({
       alignSelf: 'flex-start',
     },
     title: {
-      fontSize: 36,
+      fontSize: 30,
       fontWeight: 'bold',
       marginBottom: 20,
     },
@@ -27,7 +28,7 @@ export const styles = StyleSheet.create({
       padding: 10,
       borderWidth: 0,
       borderBottomWidth: 1,
-      borderBottomColor: '#86939e',
+      borderColor: '#a3a19e',
       backgroundColor: 'white',
       flex: 1,
     },
@@ -44,19 +45,44 @@ export const styles = StyleSheet.create({
     columnContainer: {
       flex: 1,
     },
+    shadowLayer: {
+      position: 'absolute',
+      width: 220, // Ajuste conforme necessário
+      height: 55,
+      backgroundColor: '#2E5D6E', // Cor da sombra sólida
+      top: 8, // Deslocamento vertical
+      left: 8, // Deslocamento horizontal
+
+    },
     button: {
-      backgroundColor: theme.colorDarkBlue,
-      paddingVertical: 10,
-      borderRadius: 10,
-      marginBottom: 20,
+      width: 220,
+      height: 55,
+      borderWidth: 2,
+      borderColor: '#000',
+      backgroundColor: '#fff', // Fundo branco do botão
+      justifyContent: 'center',
       alignItems: 'center',
-      width: 200,
-      marginTop: 20,
+      elevation: 0, // Sem sombra adicional no botão
+    },
+    touchable: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    buttonContent: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap:5
     },
     buttonText: {
-      color: '#fff',
-      fontSize: 16,
+      fontSize: 20,
       fontWeight: 'bold',
+      color: '#000',
+    },
+    buttonContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     inputContainer: {
       width: 300,
@@ -117,5 +143,20 @@ export const styles = StyleSheet.create({
     confirmButtonText: {
       color: theme.colorWhite,
       fontWeight: 'bold',
+    },
+    photoAdd:{
+      backgroundColor: 'white',
+      padding:10,
+      borderWidth:5,
+      borderColor:theme.colorDarkBlue,
+      borderRadius:50,
+      marginTop:-40,
+      marginLeft:70,
+    },
+    profileImage: {
+      alignItems: 'center',
+    },
+    profileImageContainer: {
+      alignItems: 'center',
     },
   });
