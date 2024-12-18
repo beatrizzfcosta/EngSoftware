@@ -83,6 +83,7 @@ export const styles = StyleSheet.create({
     buttonContainer: {
       alignItems: 'center',
       justifyContent: 'center',
+      paddingBottom:20
     },
     inputContainer: {
       width: 300,

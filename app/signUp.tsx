@@ -192,7 +192,7 @@ export default function RegisterScreen({ navigation }: { navigation: any }) {
           name="arrow-left"
           size={24}
           color={theme.colorDarkBlue}
-          onPress={() => navigation.navigate('Sign In')}
+          onPress={() => navigation.navigate('Home')}
         />
       </TouchableOpacity>
 

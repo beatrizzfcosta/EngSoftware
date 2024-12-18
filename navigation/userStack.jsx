@@ -3,8 +3,10 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { theme } from '../assets/theme';
+import SignUpScreen from '../app/signUp';
 
-import HomeScreen from '../app/';
+import HomeScreen from '../app/homePage';
+import UserListScreen from '../app/userList';
 
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -55,6 +57,8 @@ export default function UserStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Sign Up" component={SignUpScreen} />
+      <Stack.Screen name="User Li" component={UserListScreen} />
     </Stack.Navigator>
   );
 }

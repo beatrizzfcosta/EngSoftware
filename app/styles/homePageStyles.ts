@@ -39,14 +39,26 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     padding: 20,
     margin: 10,
-    shadowColor: theme.colorDarkBlue,
-    shadowOffset: { width: 10, height: 10 }, // Deslocamento horizontal e vertical
-    shadowOpacity: 1, // Opacidade da sombra (1 para sólida)
-    shadowRadius: 0, // Raio da sombra (0 para bordas nítidas)
-    elevation: 4,
-    alignItems: 'center',
+    alignItems: "center",
     gap: 5,
-    justifyContent: 'center'
+    justifyContent: "center",
+    elevation: 0, // Sem sombra adicional no botão
+  },
+  buttonContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    margin: 10, // Para evitar sobreposição
+    position: "relative", // Necessário para o posicionamento absoluto da sombra
+  },
+  shadowLayer: {
+    position: "absolute",
+    width: 150,
+    height: 150,
+    backgroundColor: theme.colorDarkBlue,
+    borderRadius: 30, // Deve ser igual ao do botão
+    top: 20,
+    left: 20,
+    zIndex: 0, // Garante que fique atrás do botão
   },
   buttonText: {
     fontSize: 16,
@@ -54,4 +66,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "Abril Fatface",
   },
+  
+  errorText:{
+    color:'red'
+  }
 });
