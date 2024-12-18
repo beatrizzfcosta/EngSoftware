@@ -9,7 +9,9 @@ import {
   Modal,
   Alert,
   Platform,
-  Image
+  Image,
+  KeyboardAvoidingView,
+  ScrollView,
 } from 'react-native';
 import { Input } from 'react-native-elements';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -345,12 +347,16 @@ export default function RegisterScreen({ navigation }: { navigation: any }) {
   );
 
   return (
-    <FlatList
-      data={[{ key: 'formContent' }]}
-      renderItem={renderContent}
-      keyExtractor={(item) => item.key}
-      contentContainerStyle={styles.scrollContainer}
-      keyboardShouldPersistTaps="handled"
-    />
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    >
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        keyboardShouldPersistTaps="handled"
+      >
+        {renderContent()}
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
