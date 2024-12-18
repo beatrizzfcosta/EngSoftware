@@ -3,7 +3,7 @@ import { KeyboardAvoidingView, Platform } from 'react-native';
 //import notifee, { AndroidImportance } from '@notifee/react-native';
 import RootNavigation from '../navigation/index';
 import * as Font from 'expo-font';
-/*import {
+import {
   FIREBASE_APP,
   FIREBASE_AUTH,
   FIREBASE_DB,
@@ -21,21 +21,33 @@ import * as Font from 'expo-font';
 
 export default function Index() {
     const [fontLoaded, setFontLoaded] = useState(false);
+
   useEffect(() => {
-    Font.loadAsync({
-      Graduate: require('../assets/fonts/AbrilFatface-Regular.ttf')
-    }).then(() => setFontLoaded(true));
+    async function initializeApp() {
+      try {
+        // Testar se o Firebase foi inicializado corretamente
+        console.log('Firebase App:', FIREBASE_APP);
+        console.log('Firebase Auth:', FIREBASE_AUTH);
+        console.log('Firebase Firestore:', FIREBASE_DB);
+        console.log('Firebase Realtime DB:', FIREBASE_REALTIME_DB);
+
+
+        // Carregar fontes personalizadas
+        await Font.loadAsync({
+          Graduate: require('../assets/fonts/AbrilFatface-Regular.ttf'),
+        });
+
+        setFontLoaded(true);
+      } catch (error) {
+        console.error('Erro ao inicializar o aplicativo:', error);
+      }
+    }
+
+    initializeApp();
   }, []);
-  /*
-  useEffect(() => {
-    // Testar se o Firebase foi inicializado corretamente
-    console.log('Firebase App:', FIREBASE_APP);
-    console.log('Firebase Auth:', FIREBASE_AUTH);
-    console.log('Firebase Firestore:', FIREBASE_DB);
-    console.log('Firebase Realtime DB:', FIREBASE_REALTIME_DB);
 
     // Carregar fontes personalizadas
-  */
+  
   // useEffect(() => {
   //   setupNotificationChannel();
   // }, []);
