@@ -7,7 +7,12 @@ import auth from '@react-native-firebase/auth';
 
 
 export default function ({ navigation }: { navigation: any }) {
-    const [users, setUsers] = useState<any[]>([]);
+    const [users, setUsers] = useState([
+        { id: "1", username: "João Silva", permissao: "Admin" },
+        { id: "2", username: "Maria Oliveira", permissao: "Professor" },
+        { id: "3", username: "Carlos Souza", permissao: "Aluno" },
+        { id: "4", username: "Ana Pereira", permissao: "Aluno" },
+    ]);
     const [loading, setLoading] = useState(true);
 
 
@@ -53,7 +58,6 @@ export default function ({ navigation }: { navigation: any }) {
             }
           }
     
-          setUsers(userList);
           console.log("Usuários carregados:", userList);
         } catch (error) {
           console.error("Erro ao buscar utilizadores:", error);
@@ -69,7 +73,7 @@ export default function ({ navigation }: { navigation: any }) {
     };
 
     const handleAddButton = () => {
-        Alert.alert("Adicionar Utilizador", "Abrir tela para adicionar novo utilizador");
+        auth().signOut();
     };
 
     return (
@@ -91,7 +95,7 @@ export default function ({ navigation }: { navigation: any }) {
                 renderItem={({ item }) => (
                     <View style={styles.userCard}>
                         <View style={styles.userInfo}>
-                            <Text style={styles.userName}>{item.name}</Text>
+                            <Text style={styles.userName}>{item.username}</Text>
                             <Text style={styles.userInfoP }>Tipo: {item.permissao}</Text>
                         </View>
                         <View style={styles.buttonContainer}>
@@ -100,7 +104,7 @@ export default function ({ navigation }: { navigation: any }) {
                 {/* Botão principal */}
                         <TouchableOpacity
                             style={styles.addButton}
-                            onPress={() => handleAddInfo(item.name)}
+                            onPress={() => handleAddInfo(item.username)}
                         >
                             <Ionicons name="add" size={20} color="#000" />
                         </TouchableOpacity>

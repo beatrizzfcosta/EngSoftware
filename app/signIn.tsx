@@ -92,12 +92,6 @@ export default function LoginPage({ navigation }: { navigation: any }) {
               </TouchableOpacity>
             </View>
           </View>
-
-      <TouchableOpacity>
-        <Text style={styles.registerText} onPress={handleRegisto}>
-          Don't have an account yet? Sign up here!
-        </Text>
-      </TouchableOpacity>
       </View>
     </View>
   );
